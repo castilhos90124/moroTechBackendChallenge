@@ -12,7 +12,3 @@ make run
 
 It can be accessed in http://localhost:8002/
 
-To create a local superuser, run:
-```
-make superuser
-```
