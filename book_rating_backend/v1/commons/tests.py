@@ -10,4 +10,4 @@ class CustomAPITestCase(APITestCase):
     def __is_subset(cls, expected_fields, response_data):
         obtained = set(response_data.keys())
         expected = set(expected_fields)
-        return obtained.issubset(expected)
+        return obtained.issubset(expected) and expected.issubset(obtained)
