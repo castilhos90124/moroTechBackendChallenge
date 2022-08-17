@@ -1,4 +1,3 @@
-from logging import debug
 from rest_framework import status
 from rest_framework.reverse import reverse
 from book_rating_backend.v1.commons.messages import Message
@@ -19,7 +18,7 @@ class BookTest(CustomAPITestCase):
         url = f'{self.BASE_GET_URL}?{query_param}'
 
         response = self.client.get(url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertExpectedFields(self.BOOK_ATTRIBUTES, response.data['books'][0])
 
