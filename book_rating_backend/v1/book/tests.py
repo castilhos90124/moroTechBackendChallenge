@@ -1,10 +1,10 @@
 from rest_framework import status
 from rest_framework.reverse import reverse
 from book_rating_backend.v1.commons.messages import Message
-from book_rating_backend.v1.commons.tests import CustomAPITestCase
+from rest_framework.test import APITestCase
 
 
-class BookTest(CustomAPITestCase):
+class BookTest(APITestCase):
     def setUp(self):
         super().setUp()
 
@@ -20,7 +20,7 @@ class BookTest(CustomAPITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertExpectedFields(self.BOOK_ATTRIBUTES, response.data['books'][0])
+        self.assertEqual(self.BOOK_ATTRIBUTES, set(response.data['books'][0]))
 
     def test_get_books_without_query_param(self):
         response = self.client.get(self.BASE_GET_URL)
