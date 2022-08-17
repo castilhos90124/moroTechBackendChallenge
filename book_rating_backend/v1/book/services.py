@@ -1,5 +1,7 @@
-import requests
 import json
+
+import requests
+from book_rating_backend.v1.commons.messages import Message
 from rest_framework import status
 from rest_framework.exceptions import APIException
 
@@ -16,7 +18,7 @@ class BookService:
         try:
             response = requests.get(F'{BOOK_API_URL}?search={book_title}')
             if response.status_code != status.HTTP_200_OK:
-                raise APIException("Error getting books information from Gutendex API")
+                raise APIException(Message.gutendex_error())
             return json.loads(response.text)['results']
         except requests.exceptions.RequestException as e:
             raise SystemExit(e)
