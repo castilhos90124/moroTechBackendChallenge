@@ -18,4 +18,4 @@ class BookViewSet(viewsets.ViewSet):
 
         serializer = BookSerializer(data, many=True)
 
-        return Response({"books": serializer.data})
+        return Response({'books': serializer.data})

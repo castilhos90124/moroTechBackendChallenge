@@ -5,7 +5,7 @@ from book_rating_backend.v1.commons.messages import Message
 from rest_framework import status
 from rest_framework.exceptions import APIException
 
-BOOK_API_URL = "https://gutendex.com/books/"
+BOOK_API_URL = 'https://gutendex.com/books/'
 
 
 class BookService:
