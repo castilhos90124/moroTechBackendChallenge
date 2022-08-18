@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from book_rating_backend.models import BookReview
 
 
 class AuthorSerializer(serializers.Serializer):
@@ -13,3 +14,18 @@ class BookSerializer(serializers.Serializer):
     authors = AuthorSerializer(many=True)
     languages = serializers.ListField()
     download_count = serializers.IntegerField()
+
+
+class BookReviewSerializer(serializers.ModelSerializer):
+    book_id = serializers.IntegerField()
+    rating = serializers.IntegerField(min_value=0, max_value=5)
+    review = serializers.CharField(max_length=1000)
+
+    class Meta:
+        model = BookReview
+        fields = (
+            "uuid",
+            "book_id",
+            "rating",
+            "review",
+        )

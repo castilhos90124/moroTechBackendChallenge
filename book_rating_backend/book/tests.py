@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.reverse import reverse
-from book_rating_backend.v1.commons.messages import Message
+from book_rating_backend.commons.messages import Message
 from rest_framework.test import APITestCase
 
 

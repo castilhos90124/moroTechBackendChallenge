@@ -1,13 +1,15 @@
-from book_rating_backend.v1.book.serializers import BookSerializer
-from book_rating_backend.v1.book.services import BookService
-from book_rating_backend.v1.commons.messages import Message
+from book_rating_backend.serializers import BookSerializer, BookReviewSerializer
+from django.db import router, transaction
+from book_rating_backend.book.services import BookService
+from book_rating_backend.commons.messages import Message
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import viewsets
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
 
-class BookViewSet(viewsets.ViewSet):
+class BookViewSet(viewsets.ModelViewSet):
+    serializer_class = BookReviewSerializer
 
     def list(self, request):
         service = BookService()
@@ -19,3 +21,8 @@ class BookViewSet(viewsets.ViewSet):
         serializer = BookSerializer(data, many=True)
 
         return Response({'books': serializer.data})
+
+    def perform_create(self, serializer):
+        with transaction.atomic():
+            BookService.update_book_rating(self.request.data['book_id'], self.request.data['rating'])
+            serializer.save()
