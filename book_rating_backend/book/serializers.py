@@ -29,3 +29,8 @@ class BookReviewSerializer(serializers.ModelSerializer):
             "rating",
             "review",
         )
+
+
+class BookDetailSerializer(BookSerializer):
+    rating = serializers.FloatField()
+    reviews = serializers.ListField()
