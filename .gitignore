@@ -3,3 +3,4 @@
 gutendex_response.json
 venv
 setup.cfg
+*.pyc

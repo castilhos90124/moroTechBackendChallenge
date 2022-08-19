@@ -5,21 +5,14 @@ from rest_framework.test import APITestCase
 from book_rating_backend.models import Book, BookReview
 
 
-
 class BookTest(APITestCase):
     def setUp(self):
         super().setUp()
-
         self.BASE_URL = reverse('books-list')
-        self.BOOK_ATTRIBUTES = set(
-            ['id', 'title', 'authors', 'languages', 'download_count']
-        )
-        self.REVIEW_ATTRIBUTES = set(['uuid', 'book_id', 'rating', 'review'])
-        self.DEFAULT_BODY_PARAMS = {
-            'book_id': 1,
-            'rating': 4,
-            'review': 'An interesting book.'
-        }
+        self.BOOK_ATTRIBUTES = {'id', 'title', 'authors', 'languages', 'download_count'}
+        self.REVIEW_ATTRIBUTES = {'uuid', 'book_id', 'rating', 'review'}
+        self.BOOK_DETAIL_ATTRIBUTES = {'id', 'title', 'authors', 'languages', 'download_count', 'rating', 'reviews'}
+        self.DEFAULT_BODY_PARAMS = {'book_id': 1, 'rating': 4, 'review': 'An interesting book.'}
 
     def test_get_books(self):
         query_param = 'book_title=Frankenstein'
@@ -37,7 +30,6 @@ class BookTest(APITestCase):
         self.assertEqual(response.data['detail'], Message.book_title_not_informed())
 
     def test_post_book_review(self):
-
         response = self.client.post(self.BASE_URL, self.DEFAULT_BODY_PARAMS)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -62,3 +54,22 @@ class BookTest(APITestCase):
         response = self.client.post(self.BASE_URL, self.DEFAULT_BODY_PARAMS)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_book_details(self):
+        book_id = 1
+        rating_sum = 9
+        rating_count = 2
+        reviews = ['Very interesting!', 'Awesome']
+
+        Book(id=book_id, rating_sum=rating_sum, rating_count=rating_count).save()
+        BookReview(book_id=book_id, rating=4, review=reviews[0]).save()
+        BookReview(book_id=book_id, rating=5, review=reviews[1]).save()
+
+        response = self.client.get(F'{self.BASE_URL}{book_id}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.BOOK_DETAIL_ATTRIBUTES, set(response.data))
+        self.assertEqual(response.data['rating'], round(float(rating_sum) / rating_count, 1))
+        self.assertEqual(len(response.data['reviews']), rating_count)
+        self.assertEqual(response.data['reviews'][0], reviews[0])
+        self.assertEqual(response.data['reviews'][1], reviews[1])
