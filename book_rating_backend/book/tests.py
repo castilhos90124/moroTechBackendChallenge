@@ -73,3 +73,13 @@ class BookTest(APITestCase):
         self.assertEqual(len(response.data['reviews']), rating_count)
         self.assertEqual(response.data['reviews'][0], reviews[0])
         self.assertEqual(response.data['reviews'][1], reviews[1])
+
+    def test_get_book_details_without_reviews(self):
+        book_id = 1
+
+        response = self.client.get(F'{self.BASE_URL}{book_id}/')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.BOOK_DETAIL_ATTRIBUTES, set(response.data))
+        self.assertEqual(response.data['rating'], None)
+        self.assertEqual(response.data['reviews'], [])
