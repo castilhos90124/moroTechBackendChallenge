@@ -24,10 +24,10 @@ class BookReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookReview
         fields = (
-            "uuid",
-            "book_id",
-            "rating",
-            "review",
+            'uuid',
+            'book_id',
+            'rating',
+            'review',
         )
 
 

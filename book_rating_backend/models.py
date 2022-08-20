@@ -11,7 +11,7 @@ class Book(models.Model):
     last_modified = models.DateTimeField(null=True, auto_now=True)
 
     class Meta:
-        db_table = "book"
+        db_table = 'book'
 
 
 class BookReview(models.Model):
@@ -23,4 +23,4 @@ class BookReview(models.Model):
     last_modified = models.DateTimeField(null=True, auto_now=True)
 
     class Meta:
-        db_table = "book_review"
+        db_table = 'book_review'

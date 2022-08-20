@@ -7,9 +7,9 @@ from book_rating_backend.book.views import BookViewSet
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Books API",
+      title='Books API',
       default_version='v1',
-      description="MoroTech Backend Challenge",
+      description='MoroTech Backend Challenge',
    ),
    public=True,
 )
