@@ -23,7 +23,7 @@ class BookService:
         book_details['reviews'] = self.__get_book_reviews(book_id)
         return book_details
 
-    def __get_book_data(self, query_param: str='') -> dict:
+    def __get_book_data(self, query_param: str = '') -> dict:
         try:
             response = requests.get(F'{self.BOOK_API_URL}{query_param}')
             if response.status_code != status.HTTP_200_OK:
