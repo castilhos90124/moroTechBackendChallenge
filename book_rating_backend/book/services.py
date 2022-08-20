@@ -2,10 +2,10 @@ import json
 
 import requests
 from book_rating_backend.commons.messages import Message
-from rest_framework import status
-from rest_framework.exceptions import APIException
 from book_rating_backend.models import Book, BookReview
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import status
+from rest_framework.exceptions import APIException
 
 
 class BookService:

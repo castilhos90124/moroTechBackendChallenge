@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from book_rating_backend.models import BookReview
+from rest_framework import serializers
 
 
 class AuthorSerializer(serializers.Serializer):

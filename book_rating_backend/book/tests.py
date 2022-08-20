@@ -1,8 +1,8 @@
+from book_rating_backend.commons.messages import Message
+from book_rating_backend.models import Book, BookReview
 from rest_framework import status
 from rest_framework.reverse import reverse
-from book_rating_backend.commons.messages import Message
 from rest_framework.test import APITestCase
-from book_rating_backend.models import Book, BookReview
 
 
 class BookTest(APITestCase):
