@@ -13,17 +13,17 @@ class BookService:
     def __init__(self):
         self.BOOK_API_URL = 'https://gutendex.com/books/'
 
-    def get_books_by_title(self, book_title):
+    def get_books_by_title(self, book_title: str) -> dict:
         query_param = F'?search={book_title}'
         return self.__get_book_data(query_param)['results']
 
-    def get_book_details(self, book_id):
+    def get_book_details(self, book_id: str) -> dict:
         book_details = self.__get_book_data(book_id)
         book_details['rating'] = self.__get_book_average_rating(book_id)
         book_details['reviews'] = self.__get_book_reviews(book_id)
         return book_details
 
-    def __get_book_data(self, query_param=''):
+    def __get_book_data(self, query_param: str='') -> dict:
         try:
             response = requests.get(F'{self.BOOK_API_URL}{query_param}')
             if response.status_code != status.HTTP_200_OK:
@@ -33,7 +33,7 @@ class BookService:
             raise SystemExit(e)
 
     @staticmethod
-    def __get_book_average_rating(book_id):
+    def __get_book_average_rating(book_id: str) -> float:
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
@@ -41,12 +41,12 @@ class BookService:
         return round(float(book.rating_sum) / book.rating_count, 1)
 
     @staticmethod
-    def __get_book_reviews(book_id):
+    def __get_book_reviews(book_id: str) -> list:
         book_reviews_queryset = BookReview.objects.filter(book_id=book_id).values_list('review', flat=True)
         return list(book_reviews_queryset)
 
     @staticmethod
-    def update_book_rating(book_id, rating):
+    def update_book_rating(book_id: int, rating: int):
         book, _ = Book.objects.get_or_create(
             id=book_id, defaults={'rating_sum': 0, 'rating_count': 0}
         )
