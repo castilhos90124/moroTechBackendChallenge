@@ -4,7 +4,6 @@ from book_rating_backend.book.serializers import (BookDetailSerializer,
                                                   BookSerializer)
 from book_rating_backend.book.services import BookService
 from book_rating_backend.commons.messages import Message
-from django.db import transaction
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.decorators import method_decorator
 from rest_framework import mixins, viewsets
@@ -32,9 +31,8 @@ class BookViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         return Response({'books': serializer.data})
 
     def perform_create(self, serializer: BookReviewSerializer):
-        with transaction.atomic():
-            BookService.update_book_rating(self.request.data['book_id'], self.request.data['rating'])
-            serializer.save()
+        BookService.update_book_rating(self.request.data['book_id'], self.request.data['rating'])
+        serializer.save()
 
     def retrieve(self, request: Request, **kwargs: dict) -> Response:
         data = self.service.get_book_details(kwargs.get('pk'))

@@ -68,6 +68,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'postgres-db',
         'PORT': 5432,
+        'ATOMIC_REQUESTS': True,
     }
 }
 

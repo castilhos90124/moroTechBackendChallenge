@@ -10,7 +10,7 @@ class BookTest(APITestCase):
         super().setUp()
         self.BASE_URL = reverse('books-list')
         self.BOOK_ATTRIBUTES = {'id', 'title', 'authors', 'languages', 'download_count'}
-        self.REVIEW_ATTRIBUTES = {'uuid', 'book_id', 'rating', 'review'}
+        self.REVIEW_ATTRIBUTES = {'id', 'book_id', 'rating', 'review'}
         self.BOOK_DETAIL_ATTRIBUTES = {'id', 'title', 'authors', 'languages', 'download_count', 'rating', 'reviews'}
         self.DEFAULT_BODY_PARAMS = {'book_id': 1, 'rating': 4, 'review': 'An interesting book.'}
 
