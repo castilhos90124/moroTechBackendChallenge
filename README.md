@@ -2,7 +2,7 @@
 
 ## Local Setup
 
-Make sure you have [docker-compose](https://docs.docker.com/compose/install/) installed.
+Make sure you have [docker-compose](https://docs.docker.com/compose/install/) and [make](https://linuxhint.com/install-make-ubuntu/) installed.
 
 To start the application, open a terminal on the root folder and run:
 
