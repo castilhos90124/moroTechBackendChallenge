@@ -20,3 +20,8 @@ To run API tests, type:
 ```
 make test
 ```
+
+## Thought Process and High-level System Diagram
+
+The thought process for developing this solution and a high-level system diagram
+can be found in a pdf file on the root project's directory.
