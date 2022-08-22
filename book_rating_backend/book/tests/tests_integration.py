@@ -10,7 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
 
-class BookTest(APITestCase):
+class BookAPITest(APITestCase):
     def setUp(self):
         super().setUp()
         self.BASE_URL = reverse('books-list')
