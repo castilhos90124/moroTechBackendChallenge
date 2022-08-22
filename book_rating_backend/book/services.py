@@ -1,4 +1,5 @@
 import json
+from http.client import HTTPResponse
 
 import requests
 from book_rating_backend.commons.messages import Message
@@ -13,7 +14,7 @@ class BookService:
     def __init__(self):
         self.BOOK_API_URL = 'https://gutendex.com/books/'
 
-    def get_books_by_title(self, book_title: str) -> dict:
+    def get_books_by_title(self, book_title: str) -> list:
         query_param = F'?search={book_title}'
         return self.__get_book_data(query_param)['results']
 
@@ -32,7 +33,7 @@ class BookService:
         except requests.exceptions.RequestException as e:
             raise SystemExit(e)
 
-    def get_external_api_response(self, query_param: str):
+    def get_external_api_response(self, query_param: str) -> HTTPResponse:
         return requests.get(F'{self.BOOK_API_URL}{query_param}')
 
     @staticmethod
