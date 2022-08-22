@@ -1,3 +1,8 @@
+from unittest.mock import patch
+
+from book_rating_backend.book.services import BookService
+from book_rating_backend.book.tests.gutendex_mock import (
+    GET_BOOK_BY_TITLE_MOCK, GET_BOOK_DETAIL_MOCK, GET_ERROR)
 from book_rating_backend.commons.messages import Message
 from book_rating_backend.models import Book, BookReview
 from rest_framework import status
@@ -14,10 +19,12 @@ class BookTest(APITestCase):
         self.BOOK_DETAIL_ATTRIBUTES = {'id', 'title', 'authors', 'languages', 'download_count', 'rating', 'reviews'}
         self.DEFAULT_BODY_PARAMS = {'book_id': 1, 'rating': 4, 'review': 'An interesting book.'}
 
-    def test_get_books(self):
+    @patch.object(BookService, 'get_external_api_response')
+    def test_get_books(self, external_api_mock):
+        external_api_mock.return_value = GET_BOOK_BY_TITLE_MOCK
+
         query_param = 'book_title=Frankenstein'
         url = f'{self.BASE_URL}?{query_param}'
-
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -28,6 +35,18 @@ class BookTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['detail'], Message.book_title_not_informed())
+
+    @patch.object(BookService, 'get_external_api_response')
+    def test_external_api_error(self, external_api_mock):
+        external_api_mock.return_value = GET_ERROR
+
+        query_param = 'book_title=Frankenstein'
+        url = f'{self.BASE_URL}?{query_param}'
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(response.data['detail'], Message.gutendex_error())
 
     def test_post_book_review(self):
         response = self.client.post(self.BASE_URL, self.DEFAULT_BODY_PARAMS)
@@ -55,7 +74,10 @@ class BookTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_get_book_details(self):
+    @patch.object(BookService, 'get_external_api_response')
+    def test_get_book_details(self, external_api_mock):
+        external_api_mock.return_value = GET_BOOK_DETAIL_MOCK
+
         book_id = 1
         rating_sum = 9
         rating_count = 2
@@ -74,7 +96,10 @@ class BookTest(APITestCase):
         self.assertEqual(response.data['reviews'][0], reviews[0])
         self.assertEqual(response.data['reviews'][1], reviews[1])
 
-    def test_get_book_details_without_reviews(self):
+    @patch.object(BookService, 'get_external_api_response')
+    def test_get_book_details_without_reviews(self, external_api_mock):
+        external_api_mock.return_value = GET_BOOK_DETAIL_MOCK
+
         book_id = 1
 
         response = self.client.get(F'{self.BASE_URL}{book_id}/')

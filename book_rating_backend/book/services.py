@@ -23,14 +23,17 @@ class BookService:
         book_details['reviews'] = self.__get_book_reviews(book_id)
         return book_details
 
-    def __get_book_data(self, query_param: str = '') -> dict:
+    def __get_book_data(self, query_param: str = ''):
         try:
-            response = requests.get(F'{self.BOOK_API_URL}{query_param}')
+            response = self.get_external_api_response(query_param)
             if response.status_code != status.HTTP_200_OK:
                 raise APIException(Message.gutendex_error())
             return json.loads(response.text)
         except requests.exceptions.RequestException as e:
             raise SystemExit(e)
+
+    def get_external_api_response(self, query_param: str):
+        return requests.get(F'{self.BOOK_API_URL}{query_param}')
 
     @staticmethod
     def __get_book_average_rating(book_id: str) -> float:
@@ -47,9 +50,10 @@ class BookService:
 
     @staticmethod
     def update_book_rating(book_id: int, rating: int):
-        book, _ = Book.objects.get_or_create(
-            id=book_id, defaults={'rating_sum': 0, 'rating_count': 0}
+        book, created = Book.objects.get_or_create(
+            id=book_id, defaults={'rating_sum': rating, 'rating_count': 1}
         )
-        book.rating_sum += rating
-        book.rating_count += 1
-        book.save()
+        if not created:
+            book.rating_sum += rating
+            book.rating_count += 1
+            book.save()
