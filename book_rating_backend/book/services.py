@@ -30,8 +30,8 @@ class BookService:
             if response.status_code != status.HTTP_200_OK:
                 raise APIException(Message.gutendex_error())
             return json.loads(response.text)
-        except requests.exceptions.RequestException as e:
-            raise SystemExit(e)
+        except requests.exceptions.RequestException:
+            raise APIException(Message.gutendex_error())
 
     def get_external_api_response(self, query_param: str) -> HTTPResponse:
         return requests.get(F'{self.BOOK_API_URL}{query_param}')
