@@ -1,5 +1,6 @@
 # moroTechBackendChallenge
 
+The description of this challenge can be found in the [description file](https://github.com/castilhos90124/moroTechBackendChallenge/blob/main/ChallengeDescription.pdf).
 ## Local Setup
 
 Make sure you have [docker-compose](https://docs.docker.com/compose/install/) and [make](https://linuxhint.com/install-make-ubuntu/) installed.
@@ -24,4 +25,4 @@ make test
 ## Thought Process and High-level System Diagram
 
 The thought process for developing this solution and a high-level system diagram
-can be found in a pdf file on the root project's directory.
+can be found [here](https://github.com/castilhos90124/moroTechBackendChallenge/blob/main/ThoughtProcessAndSystemDiagram.pdf).
